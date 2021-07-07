@@ -8,6 +8,7 @@ import (
 
 type WebServer struct {
 	Products *model.Products
+	Port     string
 }
 
 func NewWebServer() *WebServer {
@@ -19,7 +20,7 @@ func (w WebServer) Serve() {
 
 	e.GET("/products", w.getAll)
 	e.POST("/products", w.createProduct)
-	e.Start(":8080")
+	e.Start(w.Port)
 }
 
 func (w WebServer) getAll(ctx echo.Context) error {
@@ -29,7 +30,7 @@ func (w WebServer) getAll(ctx echo.Context) error {
 func (w WebServer) createProduct(ctx echo.Context) error {
 	product := model.NewProduct()
 
-	if err := ctx.Bind(product); err != nil  {
+	if err := ctx.Bind(product); err != nil {
 		return err
 	}
 
